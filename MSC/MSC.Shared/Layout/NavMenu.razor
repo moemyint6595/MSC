@@ -1,0 +1,80 @@
+﻿<div class="nav-sidebar">
+    <div class="nav-wrapper">
+        <button @onclick='()=>GotoRoute(CurrnetMenu.Search)' type="button" class="@(currentMenu == CurrnetMenu.Search ? "selected-nav":"") btn-none navbtn icon-color">
+            <SearchIcon Height="23" Width="23" />
+        </button>
+        <button @onclick='()=>GotoRoute(CurrnetMenu.BookList)' type="button" class="@(currentMenu == CurrnetMenu.BookList ? "selected-nav":"") btn-none navbtn icon-color">
+            <BookIcon Height="20" Width="20" />
+        </button>
+        <button @onclick='()=>GotoRoute(CurrnetMenu.Favourite)' type="button" class="@(currentMenu == CurrnetMenu.Favourite ? "selected-nav":"") btn-none navbtn icon-color">
+            <HeartIcon Height="20" Width="20" />
+        </button>
+        <button @onclick='()=>GotoRoute(CurrnetMenu.Contact)' type="button" class="@(currentMenu == CurrnetMenu.Contact ? "selected-nav":"") btn-none navbtn icon-color">
+            <ContactIcon Height="23" Width="23" />
+        </button>
+        <button @onclick='()=>GotoRoute(CurrnetMenu.Userinfo)' type="button" class="@(currentMenu == CurrnetMenu.Userinfo ? "selected-nav":"") btn-none navbtn icon-color">
+            @if (!string.IsNullOrEmpty(Gva.AuthInfo?.image_url))
+            {
+                <img class="nav-user-img" src="@Gva.AuthInfo.image_url" loading="lazy" alt="image" onerror="this.onerror=null; this.src='image/errorimage.png';" />
+            }
+            else
+            {
+                <PersonIcon Height="23" Width="23" />
+            }
+        </button>
+        @* <button @onclick='()=>GotoRoute(CurrnetMenu.Download)' type="button" class="@(currentMenu == CurrnetMenu.Download ? "selected-nav":"") btn-none navbtn icon-color">
+        <MSC.Icons.DownloadIcon Height="25" Width="25" />
+        </button> *@
+        <div class="nav-pad"></div>
+    </div>
+    <div class="applogo-box">@SVGService.AppLogo(60, 60)</div>
+</div>
+
+@code {
+    private string currentMenu = CurrnetMenu.BookList;
+
+    protected override void OnInitialized()
+    {
+        NotifierService.Notify += ReceivedEmit;
+        if (Gva.MainRoute == "/search")
+        {
+            currentMenu = CurrnetMenu.Search;
+        }
+        else if (Gva.MainRoute == "/favourite")
+        {
+            currentMenu = CurrnetMenu.Favourite;
+        }
+        else if (Gva.MainRoute == "/contact")
+        {
+            currentMenu = CurrnetMenu.Contact;
+        }
+    }
+
+    private void ReceivedEmit(string emitName, string action, object? recivedData)
+    {
+        if (emitName == NotifierEmitNames.ProfileChange)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void GotoRoute(string route)
+    {
+        Navigation.NavigateTo(route);
+        currentMenu = route;
+        if (route == CurrnetMenu.BookList)
+        {
+            Gva.MainRoute = CurrnetMenu.BookList;
+        }
+    }
+
+    public struct CurrnetMenu
+    {
+        public const string BookList = "/mangalist";
+        public const string Favourite = "/favourite";
+        public const string Download = "/download";
+        public const string Userinfo = "/userinfo";
+        public const string Contact = "/contact";
+        public const string Search = "/search";
+    }
+}

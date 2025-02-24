@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<div class="content">
+    <div class="reading-body-container">
+        @Body
+    </div>
+</div>
+
+@code {
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("CommonJSFunctions.InitiateResize");
+        }
+    }
+}

@@ -1,0 +1,119 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+
+@if (isFinished)
+{
+    <div id="page" class="page">
+        <div class="background">
+            <img id="bg-img-ele" src="@Gva.BgImgUrl" class="img" />
+        </div>
+        <div class="content">
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div>
+                @Body
+            </div>
+
+        </div>
+    </div>
+}
+
+<div id="loading" class="loading loading-hide">
+    <div class="loading-box">
+        <LoadingIcon />
+    </div>
+</div>
+
+<div id="message" class="message message-hide">
+    <div class="msg-container">
+        <div class="msg-svgbox">
+            <div>@SVGService.SadFace(70, 70)</div>
+            <div id="msg-title">Error</div>
+        </div>
+        <div id="msg-text" class="msg-textbox"></div>
+        <div class="msg-btnbox">
+            <button @onclick="OnMsgOK" type="button" class="btn-none msgokbtn">OK</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isFinished;
+
+    protected override void OnInitialized()
+    {
+        NotifierService.Notify += ReceivedEmit;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //JSFunction();
+            ComFn.Loading(true);
+            // await ComFn.SetAuthInfo();
+            // if (Gva.AuthInfo is not null)
+            // {
+            //     if (Gva.MainRoute != "/contact")
+            //     {
+            //         if (await ValidateDeviceId())
+            //         {
+            //             ComFn.GotoRoute(Gva.MainRoute);
+            //         }
+            //         else
+            //         {
+            //             await ComFn.LogOut();
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     ComFn.GotoRoute("/login");
+            // }
+            ComFn.GotoRoute(Gva.MainRoute);
+            isFinished = true;
+            StateHasChanged();
+            ComFn.Loading(false);
+        }
+    }
+
+    private void ReceivedEmit(string emitName, string action, object? recivedData)
+    {
+        if (emitName == NotifierEmitNames.BackgoundChange)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task<bool> ValidateDeviceId()
+    {
+        try
+        {
+            if (Gva.AuthInfo is not null)
+            {
+                var responseDeviceId = await D.GetDeviceIdAsync(Gva.AuthInfo.user_name);
+                if (responseDeviceId == Gva.DeviceId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            ComFn.ShowError(ex.Message);
+            return false;
+        }
+    }
+
+    private void OnMsgOK()
+    {
+        Navigation.NavigateTo("/mangalist", true);
+    }
+
+    public void Dispose()
+    {
+        NotifierService.Notify -= ReceivedEmit;
+    }
+}

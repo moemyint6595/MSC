@@ -1,0 +1,1309 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background: black;
+    
+}
+html {
+    scroll-behavior: smooth;
+}
+
+
+html, body, div, span, h1, h2, h3, h4, h5, input, textaream, button {
+    font-family: "Signika", sans-serif !important;
+}
+
+button{
+    cursor : pointer;
+}
+.mb-20px{
+    margin-bottom : 20px;
+}
+
+.btn-none {
+    background: none;
+    outline: none;
+    border: none;
+}
+.cursor-normal{
+    cursor : unset !important;
+}
+
+.d-flex{
+    display : flex;
+}
+
+.position-relative{
+    position : relative;
+}
+.full{
+    width : 100% !important;
+}
+.h-full{
+    height : 100% !important;
+}
+
+.validationbox{
+    min-height : 20px;
+}
+
+.validation-message {
+    color: red;
+}
+
+.exist-validation-message {
+    color: orange;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0;
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2;
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+.loading-progress-text {
+    position: absolute;
+    color : black !important;
+    left : 50%;
+    top : 50%;
+    transform : translate(-50%, -50%);
+    height : 100px;
+    width : 100px;
+    animation : loadinganime;
+    animation-duration : 0.3s;
+    animation-iteration-count : infinite;
+}
+
+@keyframes loadinganime{
+    0%{
+        opacity : 1;
+    }
+    100%{
+        opacity : 0.5;
+    }
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Loading");
+    }
+
+code {
+    color: #c02d76;
+}
+
+/* ================= Loading CSS==================*/
+.loading {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000bf;
+}
+.loading-hide{
+    display : none !important;
+    opacity : 0 !important;
+    z-index : -1000000;
+}
+
+.loading-box {
+    height: 100px;
+    width: 100px;
+    animation: mainloadinganime;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.password-hideshowbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+    .password-hideshowbtn{
+        color : white !important;
+    }
+
+    @keyframes mainloadinganime {
+        0% {
+        transform: rotate(0eg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/* ================= Loading CSS END ==================*/
+
+/* ================= MAINLAYOUT CSS=====================*/
+
+.page{
+    position : relative;
+}
+
+    .page .background {
+        position: absolute;
+        height: 99%;
+        width: 100%;
+        z-index: 1;
+        filter: blur(8px);
+    }
+
+        .page .background .img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+    .page .content {
+        position: relative;
+        z-index: 100;
+    }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.message {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000bf;
+}
+
+.message-hide {
+    display: none !important;
+    opacity: 0 !important;
+    z-index: -1000000;
+}
+
+.msg-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: #ffffff;
+    max-width: 300px;
+    min-width : 300px;
+}
+
+.msg-svgbox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e57373;
+    padding: 10px 0px;
+    gap : 10px;
+    flex-direction : column;
+}
+.msg-textbox {
+    line-break: anywhere;
+    color: black;
+    padding: 0px 10px;
+}
+.msgokbtn {
+    color: white !important;
+    background: #E57373 !important;
+    padding: 5px 20px !important;
+    border-radius: 10px !important;
+}
+.msg-btnbox {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+/* ================= MAINLAYOUT CSS END==================*/
+/* ================= NAVMENU CSS=====================*/
+.nav-sidebar {
+    width: 70px;
+    height: 100%;
+    background: #2f2e2e87;
+    position: relative;
+}
+
+.nav-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.nav-pad{
+    height : 10px;
+}
+
+.selected-nav {
+    color: tomato !important;
+}
+.navbtn{
+    padding : 10px !important;
+}
+.nav-user-img {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.logo-img {
+    height: 50px;
+    position: absolute;
+    top: 6px;
+    left: 13px;
+}
+
+.applogo-box {
+    position: absolute;
+    top: 6px;
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* ================= NAVMENU CSS END==================*/
+
+/* ================= MAIN BODY?COMPONETS CSS ==================*/
+.main-body {
+    margin-left: 70px;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    padding: 0px 10px 0px 10px;
+}
+
+.toolbar {
+    margin-left: 70px;
+}
+.search-box {
+    padding: 5px 45px 5px 5px;
+    position: relative;
+}
+
+
+.search-icon {
+    position : absolute;
+    top: 12px;
+    left: 10px;
+    color: tomato;
+}
+
+.search-cancel-icon {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    color: white !important;
+    z-index : 10 !important;
+}
+
+
+.icon-color {
+    color: var(--icon-color);
+}
+
+
+.search-input {
+    width: 100%;
+    height: 100%;
+    height: 36px;
+    border: none;
+    background: #00000059;
+    border-radius: 20px;
+    color: var(--text-color);
+    padding-left: 35px;
+}
+.search-input:focus-visible{
+    outline : none;
+}
+.search-input::placeholder{
+    opacity : 0.5 !important;
+    color : var(--text-color) !important;
+}
+
+.tag-title {
+    margin-bottom: 10px;
+    font-size: 18px !important;
+}
+
+.body-content{
+    padding : 10px 0px;
+}
+/* ================= MAIN BODY /COMMON COMPONETS CSS END ==================*/
+/* ================= READER SECTION CSS ==================*/
+.reading-body-container {
+    background: black;
+}
+
+.reading-item{
+    width : 100%;
+/*    margin-bottom : 5px;*/
+    display : flex;
+    align-items : center;
+    justify-content : center;
+}
+.read-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.mangadetail-main-body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+/*    padding: 0px 10px 0px 10px;*/
+}
+
+.reading-main-body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/* ================= READER SECTION CSS END ==================*/
+
+/* ================= DETAIL CSS ==================*/
+.detail-img-box {
+    width: 100%;
+    height: 185px;
+    position : relative;
+}
+    .detail-img-box .d-img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+/*        border-top-left-radius : 10px;
+        border-top-right-radius : 10px;*/
+    }
+.img-filter {
+    background: linear-gradient(0deg, #000000 10%, rgba(0, 0, 0, 0) 100%);
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+}
+.detail-title {
+    position: absolute;
+    z-index: 11;
+    bottom: 0;
+    width : 100%;
+    padding-left : 10px;
+    font-size : 20px !important;
+}
+.detail-favbtn {
+    position: absolute !important;
+    z-index: 20;
+    color: white;
+    bottom: -5px !important;
+    right: 55px !important;
+}
+
+.detail-descbox {
+    padding: 0px 10px;
+    margin-top: 10px;
+    color: #ffc8a0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.d-desc-hide .detail-descbox {
+    position: absolute;
+    opacity: 0;
+    z-index: -1000;
+    visibility: hidden;
+    top: 0;
+    transition: all ease-in-out 0.3s;
+}
+
+.d-desc-show .detail-descbox {
+    position : relative;
+    transition : all ease-in-out 0.3s;
+}
+
+.detail-decbtn {
+    position: absolute !important;
+    bottom: -5px;
+    right: 10px !important;
+    z-index: 20;
+    color: white !important;
+}
+.showdec {
+    transform: rotate(180deg);
+    transition: all ease-in-out 0.2s;
+}
+.hidedec {
+    transform: rotate(0deg);
+    transition: all ease-in-out 0.2s;
+}
+
+.de-tagbox {
+    display: flex;
+    margin-top: 15px;
+    padding-left: 10px;
+    gap: 10px;
+}
+.de-tagitem {
+    padding: 3px 10px;
+    background: #ff002d;
+    color: #ffffff;
+    border-radius: 15px;
+    font-size: 13px !important;
+}
+
+.d-episodebox {
+    display: flex;
+    flex-direction: column;
+    margin-top : 15px;
+    padding : 0px 7px;
+}
+.d-epi-btn {
+    color: white !important;
+    margin-bottom: 10px !important;
+}
+    .d-epi-btn .contentbox {
+        display: flex;
+        padding: 15px 10px;
+        border: 1px solid #e16a6a;
+        border-radius: 10px;
+        background: linear-gradient(177deg, #2513007a, #432727b3);
+        position : relative;
+    }
+
+
+    .currentepisode .d-epi-btn .contentbox {
+        border: 1px solid #ffdd03 !important;
+        background: linear-gradient(177deg, #2513007a, #d17600b3) !important;
+    }
+
+.currentepisode .cur-readicon {
+    position: absolute !important;
+    top: -7px;
+    left: -5px;
+    width: 28px;
+    height: 28px;
+    background: #ff8f00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transform: rotate(320deg);
+}
+
+.cur-readicon{
+    display : none; 
+}
+
+
+.d-epi-freebox {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: tomato;
+}
+.d-epi-blurbox {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background: #83010194;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    filter: blur(10px);
+}
+
+.blur-text {
+    filter: blur(1px);
+}
+.d-epi-freedatebox {
+    position : absolute;
+    z-index : 20;
+    left : 50%;
+    transform : translateX(-50%);
+    width : 100%;
+    height : 100%;
+    top : 0;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+}
+.vipunlockbtn {
+    position: absolute;
+    z-index: 30;
+    background: red;
+    top: 43%;
+    color: white !important;
+    transform: translateY(-50%);
+    padding: 5px 8px;
+    border-radius: 8px;
+    right: 16px;
+    font-size: 13px !important;
+    background: linear-gradient(147deg, #2f2d2d, #ff8404);
+}
+.nofreebtn .d-epi-text{
+    filter : blur(1px);
+}
+
+.detail-backbtn {
+    position: absolute !important;
+    top: 0 !important;
+    z-index: 30 !important;
+    left: 0 !important;
+    border-radius: 50% !important;
+    background: #000000b0 !important;
+    height: 35px !important;
+    width: 35px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    color : white !important;
+}
+
+.hdqua {
+    position: absolute;
+    z-index: 20;
+    right: 5px;
+    background: #ff2700;
+    color: #efefef;
+    padding: 1px 4px;
+    border-radius: 5px;
+    font-size: 12px;
+    bottom: -5px;
+}
+.lowqua {
+    position: absolute;
+    z-index: 20;
+    right: 5px;
+    background: #ffe416e6;
+    color: black;
+    padding: 1px 4px;
+    border-radius: 5px;
+    font-size: 12px;
+    bottom: -5px;
+}
+/* ================= DETAIL CSS END ==================*/
+
+/* ================= UserInfo CSS  ==================*/
+
+.user-main-body {
+    margin-left: 70px;
+    overflow-y: scroll;
+    padding: 0px 10px 0px 10px;
+    overflow-x: hidden;
+}
+
+.user-profilebox {
+    background: #1e030385;
+    border-bottom-left-radius: 70px;
+    border-bottom-right-radius: 70px;
+    position: relative;
+    height: 100px;
+}
+.pro-noimgsvg {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -30px;
+    background: black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 5px 10px 5px;
+    height: 90px;
+    width: 90px;
+}
+.user-infobox {
+    position: relative;
+    padding-top: 35px;
+}
+
+.user-namebox {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    
+}
+
+.user-name {
+    font-size: 18px !important;
+    padding: 5px 10px;
+    font-weight: bold;
+    background: #00000094;
+    border-radius: 15px;
+}
+.user-edit-box {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.user-unlockvipbtn {
+    padding: 5px 10px !important;
+    border-radius: 20px !important;
+    color: white !important;
+    background: linear-gradient(147deg, #2f2d2d8a, #ff8404) !important;
+}
+.user-vipinfo-box {
+    margin: 0px 10px;
+    padding: 10px;
+    border-radius: 15px;
+    background: linear-gradient(147deg, #2f2d2d8a, #ff8404) !important;
+}
+
+.uvb-first{
+    display : flex;
+    gap : 20px;
+    align-items : center;
+}
+
+.uvb-first .badge{
+    margin-top : -5px;
+    min-width : 70px;
+}
+
+.uvb-second {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+    .uvb-second .expdate {
+        min-width: 70px;
+    }
+
+.avatarbox {
+    background: #0000009c;
+    margin: 10px 10px 0px 10px;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ava-btn .ava-img {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.pro-imgbox {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -30px;
+   
+}
+
+.pro-img {
+    height: 90px;
+    width: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.pro-vip-crown {
+    position: absolute;
+    top : -15px;
+    left : -10px;
+    transform: rotate(340deg);
+}
+.pro-editicon {
+    position: absolute;
+    bottom: 5px;
+    color : white;
+    left: 0px;
+}
+
+.ava-savetn-box {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+}
+.ava-savebtn {
+    color: white !important;
+    border: 1px solid #00ffd9 !important;
+    padding: 5px 10px !important;
+    width: 80px !important;
+    border-radius: 15px !important;
+}
+.active-ava {
+    height: 90px !important;
+    width: 92px !important;
+    border-radius: 50% !important;
+    background: #00ffd9 !important;
+}
+
+.user-logout-box{
+    display : flex;
+    justify-content : center;
+}
+
+.user-logoutbtn {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px;
+    outline: none;
+    width: 135px !important;
+    border: 1px solid !important;
+    border-radius: 15px !important;
+    background: #082629ab !important;
+    margin-top: 20px !important;
+}
+
+.user-ava-box {
+/*    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    width: 100%;*/
+}
+/* ================= UserInfo CSS END ==================*/
+/* ================= Mangalist CSS  ==================*/
+.list-item {
+    height: 220px !important;
+    margin-bottom: 20px !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    position : relative;
+    padding : 0px !important;
+}
+
+.listitem-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.list-itemname {
+    position: absolute !important;
+    z-index: 9;
+    width: 100%;
+    bottom: 0;
+    height: 30px;
+    background: #000000bd;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    left: 0;
+    font-size: 16px;
+    line-height: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mgl-favbtn {
+    position: absolute !important;
+    z-index: 10 !important;
+    top: 10px !important;
+    left: 10px !important;
+    color: tomato !important;
+    background: #313030d6 !important;
+    border-radius: 50% !important;
+    height: 35px !important;
+    width: 35px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+/* ================= Mangalist CSS END ==================*/
+/* ================= LOGIN CSS ==================*/
+.login-main-body {
+    overflow-y: scroll;
+    padding: 0px 10px 0px 10px;
+    overflow-x: hidden;
+}
+
+.page .login-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    filter: blur(7px);
+}
+
+.page .login-background .img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.login-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,.85);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+
+    .login-box h2 {
+        margin: 0 0 15px;
+        padding: 0;
+        color: #fff;
+        text-align: center;
+        color: #03e9f4;
+    }
+
+    .login-box h3 {
+        margin: 0 0 20px;
+        padding: 0;
+        color: #fff;
+        text-align: center;
+    }
+
+    .login-box .user-box {
+        position: relative;
+        margin-bottom : 20px;
+    }
+
+        .login-box .user-box input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 10px;
+            border: none;
+            border-bottom: 1px solid #fff;
+            outline: none;
+            background: transparent;
+        }
+
+        .login-box .user-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            pointer-events: none;
+            transition: .3s;
+        }
+
+        .login-box .user-box input:focus ~ label,
+        .login-box .user-box input:valid ~ label {
+            top: -20px;
+            left: 0;
+            color: #03e9f4;
+            font-size: 12px;
+        }
+
+    .login-box form .actionbtn {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: .5s;
+        margin-top: 40px;
+        letter-spacing: 4px;
+        background: none;
+        outline: none;
+        border: none;
+    }
+
+    .login-box .actionbtn:hover {
+        background: #03e9f4;
+        color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+    }
+
+    .login-box .actionbtn span {
+        position: absolute;
+        display: block;
+    }
+
+    .login-box .actionbtn span:nth-child(1) {
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #03e9f4);
+        animation: btn-anim1 1s linear infinite;
+    }
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+
+    50%,100% {
+        left: 100%;
+    }
+}
+
+.login-box .actionbtn span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s
+}
+
+@keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+
+    50%,100% {
+        top: 100%;
+    }
+}
+
+.login-box .actionbtn span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s
+}
+
+.login-logo-box {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    top: -105px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    background: #03e9f4c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #03e9f4;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 1px #03e9f4, 0 0 15px #03e9f4, 0 0 15px #03e9f4, 0 0 20px #03e9f4;
+}
+
+.llb-img {
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    transform: rotate(315deg);
+}
+@keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+
+    50%,100% {
+        right: 100%;
+    }
+}
+
+.login-box .actionbtn span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s
+}
+
+@keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+
+    50%,100% {
+        bottom: 100%;
+    }
+}
+
+.login-choose-form {
+    display: flex !important;
+    width: 100% !important;
+    flex-direction: column !important;
+}
+.login-choose-subtn {
+    width: 200px !important;
+    border: 1px solid !important;
+    border-radius: 10px !important;
+    background: #00e5ff21 !important;
+    margin-top: 15px !important;
+    margin-bottom: 30px !important;
+}
+
+.login-choose-sibtn {
+    width: 200px !important;
+    border: 1px solid !important;
+    border-radius: 10px !important;
+    background: #ffffff33 !important;
+    margin-top: 15px !important;
+}
+.lcf-label{
+    color : gray;
+    font-size : 13px !important;
+}
+.login-backbtn {
+    position: absolute !important;
+    z-index: 100 !important;
+    background: #ffffff69 !important;
+    top: 10px !important;
+    left: 10px !important;
+    border-radius: 50% !important;
+    height: 40px !important;
+    width: 40px !important;
+}
+
+/* ================= LOGIN CSS END ==================*/
+
+
+/* ================= FAVOURITE CSS ==================*/
+.favmanga-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.fav-item {
+    width: 100%;
+    height: 200px;
+    position : relative;
+}
+
+.fav-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fav-removetbtn {
+    position: absolute !important;
+    z-index: 10 !important;
+    top: 5px !important;
+    left: 10px !important;
+    color: tomato !important;
+    background: #313030d6 !important;
+    border-radius: 50% !important;
+    height: 30px !important;
+    width: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.ufm-text {
+    font-size: 18px !important;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin: 10px 0px;
+    background: #00000070;
+    padding: 5px;
+    border-radius: 15px;
+    padding-right: 0px;
+}
+
+.fav-infobox {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 17px;
+    right: 5px;
+}
+
+.fav-infobtn {
+    color : white !important;
+}
+.fav-info-contentbox {
+    position: absolute;
+    position: absolute;
+    left: -190px;
+    width: 200px;
+    background: #000000d9;
+    top: 7px;
+    height: 120px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    z-index : 100;
+}
+
+.fav-info-okbtn {
+    width: 50px !important;
+    margin-left: auto !important;
+    color: white !important;
+    margin-right: auto !important;
+    border-radius: 10px !important;
+    padding: 4px 15px !important;
+    background: #ff7800 !important
+}
+
+/* ================= FAVOURITE CSS END ==================*/
+
+/* ================= CONTACT CSS ==================*/
+.contact-container {
+    display: flex;
+    gap: 15px;
+    background: #000000b8;
+    border-radius: 10px;
+    padding: 10px;
+}
+.contact-telsvgbox {
+    display: flex;
+    flex-direction : column;
+    gap: 8px;
+}
+
+.contact-telphonebox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.contact-telbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .contact-tellink {
+        text-decoration: auto;
+        color: #9441ff;
+    }
+.contact-version-box {
+    margin-top: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.version {
+    padding: 5px 10px;
+    background: #00000094;
+    border-radius: 15px;
+}
+/* ================= CONTACT CSS END ==================*/
+/* ================= SEARCH CSS ==================*/
+.search-result-container {
+    background: #000000ad;
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.search-result-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width : 100% !important;
+}
+.sri-imgbox img {
+    width: 30px;
+    height: 50px;
+    object-fit: cover;
+}
+.sri-name{
+    color : white;
+    font-size : 16px;
+}
+
+.recent-titlebox {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom : 10px;
+}
+.rec-title {
+    font-size: 18px;
+}
+.clear-recall-btn {
+    color: #7d7d7d !important;
+}
+.recent-result-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom : 10px;
+}
+.rri-firstbtn {
+    display: flex;
+    gap: 10px;
+    align-items : center;
+}
+.rec-svgbox {
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    background: #ffffff2e;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rri-secbtn {
+    color: #7d7d7d !important;
+}
+
+/* ================= SEARCH CSS END ==================*/

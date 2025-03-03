@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MSC.Services;
 using MSC.Shared.Services;
+using MSCShared.Services;
 
 namespace MSC
 {
@@ -18,6 +19,11 @@ namespace MSC
 
             // Add device-specific services used by the MSC.Shared project
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
+            //builder.Services.AddScoped<API_Access>();
+            builder.Services.AddScoped<NotifierService>();
+            builder.Services.AddScoped<LocalStorageService>();
+            builder.Services.AddScoped<CommonFunctionsService>();
+            builder.Services.AddScoped<VariableService>();
 
             builder.Services.AddMauiBlazorWebView();
 

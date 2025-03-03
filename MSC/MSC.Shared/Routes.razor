@@ -4,3 +4,97 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    private DotNetObjectReference<ResizeHelper>? resizeHelper;
+
+    protected override void OnInitialized()
+    {
+       
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            AuthenticationBuilder auth = new AuthenticationBuilder(ComFn, Gva, LocalService);
+            await auth.AuthenticationInit();
+            Console.WriteLine("auth.IsAuthenicated => " + auth.IsAuthenicated);
+            JSServiceInit();
+        }
+    }
+
+    private void ReizeHandler(int width, int height)
+    {
+        Console.WriteLine($"ReizeHandler Width => {width} , Height => {height}");
+    }
+
+    private void JSServiceInit()
+    {
+        resizeHelper = DotNetObjectReference.Create(new ResizeHelper(ReizeHandler));
+        if(resizeHelper is not null)
+        {
+            JSRuntime.InvokeVoidAsync("InitDotNetHelper", resizeHelper);
+        }
+    }
+
+    public class AuthenticationBuilder
+    {
+        public bool IsAuthenicated;
+
+        private readonly CommonFunctionsService _comFn;
+        private readonly VariableService _gva;
+        private readonly LocalStorageService _localService;
+
+        public AuthenticationBuilder(
+            CommonFunctionsService comFn,
+            VariableService gva,
+            LocalStorageService ls
+        )
+        {
+            _comFn = comFn;
+            _gva = gva;
+            _localService = ls;
+
+        }
+
+        public async Task AuthenticationInit()
+        {
+            await DeviceIdInit();
+            await _comFn.SetAuthInfo();
+            if (_gva.AuthInfo is null || !(await CheckIsOnlyOneDeviceUsed()))
+            {
+                await _comFn.LogOut();
+                return;
+            }
+            IsAuthenicated = true;
+        }
+
+        private async Task<bool> CheckIsOnlyOneDeviceUsed()
+        {
+            try
+            {
+                // if (_gva.AuthInfo is not null)
+                // {
+                //     var responseDeviceId = await D.GetDeviceIdAsync(_gva.AuthInfo.user_name);
+                //     if (responseDeviceId == _gva.DeviceId)
+                //     {
+                //         return true;
+                //     }
+                // }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
+        }
+
+        private async Task DeviceIdInit()
+        {
+            var deviceId = await _localService.GetItem<string>(LocalStorageKey.DeviceId);
+            _gva.DeviceId = deviceId ?? Guid.NewGuid().ToString();
+        }
+
+    }
+}

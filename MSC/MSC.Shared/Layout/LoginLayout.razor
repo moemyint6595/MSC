@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<div id="page" class="page">
+<div id="page" class="page loginlayout-page">
     <div class="login-background">
         <img id="bg-img-ele" src="@bgsrc" loading="lazy" class="img"
              onerror="this.onerror=null; this.src='image/errorimage.png';" />
@@ -8,24 +8,6 @@
     <div class="content">
         <div>
             @Body
-        </div>
-    </div>
-</div>
-<div id="loading" class="loading loading-hide">
-    <div class="loading-box">
-        <MSC.Icons.LoadingIcon />
-    </div>
-</div>
-
-<div id="message" class="message message-hide">
-    <div class="msg-container">
-        <div class="msg-svgbox">
-            <div>@SVGService.SadFace(70, 70)</div>
-            <div id="msg-title">Error</div>
-        </div>
-        <div id="msg-text" class="msg-textbox"></div>
-        <div class="msg-btnbox">
-            <button @onclick="OnMsgOK" type="button" class="btn-none msgokbtn">OK</button>
         </div>
     </div>
 </div>
@@ -43,12 +25,7 @@
     {
         if (firstRender)
         {
-
+            JSRuntime.InvokeVoidAsync("SetMainPageHeight");
         }
-    }
-
-    private void OnMsgOK()
-    {
-        ComFn.CLoseError();
     }
 }

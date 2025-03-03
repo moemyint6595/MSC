@@ -9,11 +9,11 @@ namespace MSCShared.Services
 {
     public class VariableService
     {
-        public bool IsVIP, isAuth;
+        //public bool IsVIP, isAuth;
 
         public string BaseURL = "https://msc-server.onrender.com/api";
 
-        public string BgImgUrl = string.Empty, MainRoute = "/";
+        public string BgImgUrl = string.Empty;
 
         public UserPost? AuthInfo;
 
@@ -51,5 +51,15 @@ namespace MSCShared.Services
         public const string Success = "s";
 
         public const string Fail = "f";
+    }
+
+    public readonly struct Menu
+    {
+        public const string BookList = "/mangalist";
+        public const string Favourite = "/favourite";
+        public const string Download = "/download";
+        public const string Userinfo = "/userinfo";
+        public const string Contact = "/contact";
+        public const string Search = "/search";
     }
 }

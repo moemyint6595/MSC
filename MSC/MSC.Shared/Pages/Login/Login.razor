@@ -1,0 +1,414 @@
+﻿@page "/login"
+@layout LoginLayout
+@implements IDisposable
+
+<div id="main-body" class="login-main-body">
+    @if (section == Section.Choose)
+    {
+        <div class="login-box">
+            <h2>Welcome to MSC</h2>
+            <form class="login-choose-form">
+                <div class="lcf-label">Start your journey ?</div>
+                <button type="button" class="actionbtn login-choose-subtn" @onclick='()=>OnSelectSection(Section.Create)'>
+                    Sign Up
+                </button>
+                <div class="lcf-label">Already had an account ?</div>
+                <button type="button" class="actionbtn login-choose-sibtn" @onclick='()=>OnSelectSection(Section.Login)'>
+                    Sign In
+                </button>
+            </form>
+        </div>
+    }
+    else if (section == Section.Create)
+    {
+        <div class="login-box">
+            <h2>Create Account</h2>
+            <form>
+                <div class="user-box">
+                    <input id="name-input" type="text" name="" required="" autocomplete="new-password" @bind-value="@createData.user_name" @onfocusout="ValidateName" @oninput="OnInputChange">
+                    <label>Username</label>
+                    <div class="validationbox">
+                        @if (!string.IsNullOrEmpty(errMsg["username"]))
+                        {
+                            <div class="validation-message">@errMsg["username"]</div>
+                        }
+                        @if (!string.IsNullOrEmpty(errMsg["isexist"]))
+                        {
+                            <div class="exist-validation-message">@SVGService.WarningIcon(15, 15) @errMsg["isexist"]</div>
+                        }
+                    </div>
+                </div>
+                <div class="user-box position-relative">
+                    <input type="@(hidecreatepassword ? "password":"text")" autocomplete="new-password" name="" required="" @bind-value="@createData.password" @onfocusout="ValidatePassword">
+                    <label>Password</label>
+                    <div class="password-hideshowbox">
+                        <button type="button" @onclick="ToggleHideShowPassword" class="btn-none password-hideshowbtn">
+                            @if (hidecreatepassword)
+                            {
+                                @SVGService.VisibleIcon(30, 30)
+                            }
+                            else
+                            {
+                                @SVGService.InVisibleIcon(30, 30)
+                            }
+                        </button>
+                    </div>
+                    <div class="validationbox">
+                        @if (!string.IsNullOrEmpty(errMsg["password"]))
+                        {
+                            <div class="validation-message">@errMsg["password"]</div>
+                        }
+                    </div>
+                </div>
+                <div class="user-box">
+                    <input id="name-input" type="text" name="" required="" autocomplete="new-password" @bind-value="@createData.phone" @onfocusout="ValidatePhone">
+                    <label>Phone</label>
+                    <div class="validationbox">
+                        @if (!string.IsNullOrEmpty(errMsg["phone"]))
+                        {
+                            <div class="validation-message">@errMsg["phone"]</div>
+                        }
+                    </div>
+                </div>
+                <button type="button" class="actionbtn" @onclick="OnCreateAccount">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Sign Up
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="login-box">
+            <h2>Login</h2>
+            <form>
+                <div class="user-box">
+                    <input id="name-input" type="text" autocomplete="new-password" name="" required="" @bind-value="loginData.user_name" @onfocusout="ValidateName">
+                    <label>Username</label>
+                    <div class="validationbox">
+                        @if (!string.IsNullOrEmpty(errMsg["username"]))
+                        {
+                            <div class="validation-message">@errMsg["username"]</div>
+                        }
+                    </div>
+                </div>
+                <div class="user-box position-relative">
+                    <input type="@(hideloginpassword ? "password":"text")" autocomplete="new-password" name="" required="" @bind-value="loginData.password" @onfocusout="ValidatePassword">
+                    <label>Password</label>
+                    <div class="password-hideshowbox">
+                        <button type="button" @onclick="ToggleHideShowPassword" class="btn-none password-hideshowbtn">
+                            @if (hidecreatepassword)
+                            {
+                                @SVGService.VisibleIcon(30, 30)
+                            }
+                            else
+                            {
+                                @SVGService.InVisibleIcon(30, 30)
+                            }
+                        </button>
+                    </div>
+                    <div class="validationbox">
+                        @if (!string.IsNullOrEmpty(errMsg["password"]))
+                        {
+                            <div class="validation-message">@errMsg["password"]</div>
+                        }
+                    </div>
+                </div>
+                <button type="button" class="actionbtn" @onclick='OnLogin'>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Sign In
+                </button>
+            </form>
+        </div>
+    }
+    @if (section != Section.Choose)
+    {
+        <button type="button" @onclick="Back" class="btn-none login-backbtn">@SVGService.ArrowBackIcon(25, 25)</button>
+    }
+</div>
+
+@code {
+    private string section = Section.Login;
+
+    private UserPost createData = new();
+
+    private LoginPost loginData = new();
+
+    private bool hidecreatepassword = true, hideloginpassword = true, btnProcess;
+
+    private System.Timers.Timer boundry = new System.Timers.Timer
+        {
+            Interval = 500,
+            AutoReset = false,
+        };
+
+    private string createusercheck = string.Empty;
+
+    private Dictionary<string, string> errMsg = new Dictionary<string, string>()
+    {
+        { "username", string.Empty },
+        { "password", string.Empty },
+        { "isexist", string.Empty},
+        { "phone", string.Empty}
+    };
+
+    protected override void OnInitialized()
+    {
+        boundry.Elapsed += async (s, e) =>
+        {
+            await CheckUserExist();
+            StateHasChanged();
+            boundry.Stop();
+        };
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            JSFunction();
+            Task.Run(async () =>
+            {
+                await Task.Delay(0);
+            });
+
+        }
+    }
+
+    private void JSFunction()
+    {
+        //JSRuntime.InvokeVoidAsync("CommonJSFunctions.CalHeight");
+    }
+
+    private async Task OnCreateAccount()
+    {
+        ComFn.JSConsole(createData, "createData");
+        try
+        {
+            if (btnProcess) return;
+            btnProcess = true;
+            if (NotValidate()) return;
+            createData.device_id = Gva.DeviceId;
+            ComFn.Loading(true);
+            // var createResponse = await D.CreateUser(createData);
+            // if (createResponse is not null)
+            // {
+            //     section = Section.Login;
+            // }
+        }
+        catch (Exception ex)
+        {
+            //ComFn.ShowError(ex.Message);
+        }
+        finally
+        {
+            btnProcess = false;
+            ComFn.Loading(false);
+        }
+    }
+
+    private async Task OnLogin()
+    {
+        try
+        {
+            if (btnProcess) return;
+            btnProcess = true;
+            if (NotValidate()) return;
+            loginData.device_id = Gva.DeviceId;
+            ComFn.Loading(true);
+
+
+            var authInfo = new UserPost();
+            await LocalService.SetItem<UserPost>(LocalStorageKey.Login, authInfo);
+            //await LocalService.SetItem<string>(LocalStorageKey.DeviceId, loginData.device_id);
+            ComFn.GotoRoute("/");
+
+            // var loginResponse = await D.UserLogin(loginData);
+            // if (loginResponse is not null && loginResponse.status == Status.Success)
+            // {
+            //     var authInfo = await D.GetUserByUserName(loginData.user_name);
+            //     if (authInfo is not null)
+            //     {
+            //         authInfo.password = loginData.password;
+            //         await LocalService.SetItem<UserPost>(LocalStorageKey.Login, authInfo);
+            //         await LocalService.SetItem<string>(LocalStorageKey.DeviceId, loginData.device_id);
+            //         Gva.AuthInfo = authInfo;
+            //         Gva.IsVIP = authInfo.is_vip;
+            //         ComFn.GotoRoute("/mangalist");
+            //     }
+            // }
+            // else
+            // {
+            //     ComFn.ShowError(loginResponse?.message);
+            // }
+        }
+        catch (Exception ex)
+        {
+            //ComFn.ShowError(ex.Message);
+        }
+        finally
+        {
+            btnProcess = false;
+            ComFn.Loading(false);
+        }
+    }
+
+    private void ToggleHideShowPassword()
+    {
+        if (section == Section.Create)
+        {
+            hidecreatepassword = !hidecreatepassword;
+        }
+        else
+        {
+            hideloginpassword = !hideloginpassword;
+        }
+        StateHasChanged();
+    }
+
+    private void OnSelectSection(string _section)
+    {
+        section = _section;
+    }
+
+    private void Back()
+    {
+        section = Section.Choose;
+        errMsg["username"] = string.Empty;
+        errMsg["password"] = string.Empty;
+        errMsg["isexist"] = string.Empty;
+        errMsg["phone"] = string.Empty;
+        createusercheck = string.Empty;
+        createData = new();
+        loginData = new();
+    }
+
+    private void ValidateName()
+    {
+        if (section == Section.Create)
+        {
+            if (string.IsNullOrEmpty(createData.user_name))
+            {
+                errMsg["username"] = "Please fill username";
+                return;
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(loginData.user_name))
+            {
+                errMsg["username"] = "Please fill username";
+                return;
+            }
+        }
+        errMsg["username"] = string.Empty;
+    }
+
+    private void ValidatePassword()
+    {
+        if (section == Section.Create)
+        {
+            if (string.IsNullOrEmpty(createData.password))
+            {
+                errMsg["password"] = "Please fill password";
+                return;
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(loginData.password))
+            {
+                errMsg["password"] = "Please fill password";
+                return;
+            }
+        }
+        errMsg["password"] = string.Empty;
+    }
+
+    private void ValidatePhone()
+    {
+        if (string.IsNullOrEmpty(createData.phone))
+        {
+            errMsg["phone"] = "Please fill phone number";
+        }
+        else if (!ComFn.ContainsOnlyDigits(createData.phone))
+        {
+            errMsg["phone"] = "Incorrect phone format";
+        }
+        else
+        {
+            errMsg["phone"] = string.Empty;
+        }
+    }
+
+    private bool NotValidate()
+    {
+        ValidateName();
+        ValidatePassword();
+        if (section == Section.Create)
+        {
+            ValidatePhone();
+        }
+        if (!string.IsNullOrEmpty(errMsg["username"]) || !string.IsNullOrEmpty(errMsg["password"]) || !string.IsNullOrEmpty(errMsg["phone"]))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void OnInputChange(ChangeEventArgs e)
+    {
+        createusercheck = e.Value?.ToString() ?? string.Empty;
+        //boundry.Stop();
+        //boundry.Start();
+    }
+
+    private async Task CheckUserExist()
+    {
+        // try
+        // {
+        //     if (!string.IsNullOrEmpty(createusercheck))
+        //     {
+        //         errMsg["username"] = string.Empty;
+        //         var response = await D.IsUserAlreadyExist(createusercheck);
+        //         if (response == "false")
+        //         {
+        //             errMsg["isexist"] = "User already exist";
+        //         }
+        //         else
+        //         {
+        //             errMsg["isexist"] = string.Empty;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         errMsg["isexist"] = string.Empty;
+        //         errMsg["username"] = "Please fill username";
+        //     }
+        // }
+        // catch (Exception ex)
+        // {
+        //     ComFn.ShowError(ex.Message);
+        // }
+    }
+
+    public void Dispose()
+    {
+        boundry.Dispose();
+    }
+
+    public struct Section
+    {
+        public const string Choose = "choose";
+
+        public const string Create = "create";
+
+        public const string Login = "login";
+    }
+}

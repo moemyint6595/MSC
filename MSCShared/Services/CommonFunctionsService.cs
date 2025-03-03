@@ -18,15 +18,15 @@ namespace MSCShared.Services
         NotifierService _notifier;
         VariableService _gva;
         LocalStorageService _localStorageService;
-        API_Access _API_Access;
-        public CommonFunctionsService(NavigationManager nav, IJSRuntime jSRuntime, NotifierService notifierService, VariableService variableService, LocalStorageService localStorageService, API_Access _D) 
+        //API_Access _API_Access;
+        public CommonFunctionsService(NavigationManager nav, IJSRuntime jSRuntime, NotifierService notifierService, VariableService variableService, LocalStorageService localStorageService) 
         { 
             _Nav = nav;
             _jSRuntime = jSRuntime;
             _notifier = notifierService;
             _gva = variableService;
             _localStorageService = localStorageService;
-            _API_Access = _D;
+            //_API_Access = _D;
         }
         public void GotoRoute(string route)
         {
@@ -53,14 +53,14 @@ namespace MSCShared.Services
             _jSRuntime.InvokeVoidAsync("CommonJSFunctions.ToggleLoading", toggle);
         }
 
-        public void ShowError(string? message = null)
-        {
-            if (string.IsNullOrEmpty(message))
-            {
-                message = "Something is wrong";
-            }
-            _jSRuntime.InvokeVoidAsync("CommonJSFunctions.ShowErrorMessage", message);
-        }
+        //public void ShowError(string? message = null)
+        //{
+        //    if (string.IsNullOrEmpty(message))
+        //    {
+        //        message = "Something is wrong";
+        //    }
+        //    _jSRuntime.InvokeVoidAsync("CommonJSFunctions.ShowErrorMessage", message);
+        //}
 
         public void CLoseError()
         {
@@ -86,7 +86,7 @@ namespace MSCShared.Services
             }
             catch (Exception ex)
             {
-                ShowError(ex.Message);
+                //ShowError(ex.Message);
             }
         }
 
@@ -115,7 +115,7 @@ namespace MSCShared.Services
             }
             catch (Exception ex)
             {
-                ShowError(ex.Message);
+                //ShowError(ex.Message);
             }
         }
 
@@ -133,7 +133,7 @@ namespace MSCShared.Services
         {
             if(_gva.MangaList is null || !_gva.MangaList.Any())
             {
-                _gva.MangaList = await _API_Access.GetMangaList();
+                //_gva.MangaList = await _API_Access.GetMangaList();
             }
         }
 
@@ -144,29 +144,29 @@ namespace MSCShared.Services
 
         public async Task SetAuthInfo()
         {
-            if (_gva.isAuth) return;
-            var authData = await _localStorageService.GetItem<UserPost>(LocalStorageKey.Login);
-            if(authData != null)
+            //if (_gva.isAuth) return;
+            var authData = await _localStorageService.GetItem<UserPost?>(LocalStorageKey.Login);
+            if(authData is not null)
             {
-                _gva.AuthInfo = await _API_Access.GetUserByUserName(authData.user_name);
-                if(_gva.AuthInfo is not null )
-                {
-                    _gva.IsVIP = _gva.AuthInfo.is_vip;
-                    _gva.isAuth = true;
-                    await _localStorageService.SetItem<UserPost>(LocalStorageKey.Login, _gva.AuthInfo);
-                }
-                else
-                {
-                    _gva.AuthInfo = null;
-                    _gva.IsVIP = false;
-                    _gva.isAuth = false;
-                }
+                //_gva.AuthInfo = await _API_Access.GetUserByUserName(authData.user_name);
+                //if(_gva.AuthInfo is not null )
+                //{
+                //    //_gva.IsVIP = _gva.AuthInfo.is_vip;
+                //    //_gva.isAuth = true;
+                //    await _localStorageService.SetItem<UserPost>(LocalStorageKey.Login, _gva.AuthInfo);
+                //}
+                //else
+                //{
+                //    _gva.AuthInfo = null;
+                //    //_gva.IsVIP = false;
+                //    //_gva.isAuth = false;
+                //}
             }
             else
             {
                 _gva.AuthInfo = null;
-                _gva.IsVIP = false;
-                _gva.isAuth = false;
+                //_gva.IsVIP = false;
+                //_gva.isAuth = false;
             }
         }
 
@@ -177,7 +177,7 @@ namespace MSCShared.Services
 
         private void ResetTask()
         {
-            _gva.IsVIP = false;
+            //_gva.IsVIP = false;
             _gva.BgImgUrl = string.Empty;
             _gva.AuthInfo = new();
             _gva.UserFavDict = null;
